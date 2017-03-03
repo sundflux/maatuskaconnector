@@ -31,7 +31,6 @@
  */
 namespace Mconnector\Product;
 
-use Libvaloa\Debug;
 use Mconnector\Connection\Connection as RestApiConnection;
 
 class Product
@@ -42,5 +41,4 @@ class Product
     {
         $this->connection = new RestApiConnection();
     }
-
 }

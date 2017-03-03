@@ -31,22 +31,20 @@
  */
 namespace Mconnector\Connection;
 
-use Libvaloa\Debug;
 use Webvaloa\Configuration;
 
 class Connection
 {
+    private $endpoint;
+    private $username;
+    private $password;
+    private $token;
 
-	private $endpoint;
-	private $username;
-	private $password;
-	private $token;
-
-	const CONNECTION_TOKEN_URL = '/index.php/rest/V1/integration/admin/token';
+    const CONNECTION_TOKEN_URL = '/index.php/rest/V1/integration/admin/token';
 
     public function __construct()
     {
-    	$this->token = null;
+        $this->token = null;
 
         $configuration = new Configuration();
 
@@ -57,96 +55,94 @@ class Connection
 
     public function setEndpoint($v)
     {
-    	$this->endpoint = $v;
+        $this->endpoint = $v;
     }
 
     public function setUsername($v)
     {
-    	$this->endpoint = $v;
+        $this->endpoint = $v;
     }
 
     public function setPassword($v)
     {
-    	$this->endpoint = $v;
+        $this->endpoint = $v;
     }
 
     public function getEndpoint()
     {
-    	if (substr($this->endpoint, -1) == '/') {
-    		return substr($this->endpoint, 0, -1);
-    	}
+        if (substr($this->endpoint, -1) == '/') {
+            return substr($this->endpoint, 0, -1);
+        }
 
-    	return $this->endpoint;
+        return $this->endpoint;
     }
 
     public function getUsername()
     {
-    	return $this->username;
+        return $this->username;
     }
 
     private function getPassword()
     {
-    	return $this->password;
+        return $this->password;
     }
 
     public function getToken()
     {
-    	if (!$this->token) {
-    		$this->getAuthenticationToken();
-    	}
+        if (!$this->token) {
+            $this->getAuthenticationToken();
+        }
 
-    	return $this->token;
+        return $this->token;
     }
 
     public function setToken($v)
     {
-    	$this->token = $v;
+        $this->token = $v;
     }
 
     public function getAuthenticationToken()
     {
-		$credentials = array(
-			"username" => $this->getUsername(), 
-			"password" => $this->getPassword()
-		);
+        $credentials = array(
+            'username' => $this->getUsername(),
+            'password' => $this->getPassword(),
+        );
 
-		$token = $this->call($this->getEndpoint() . CONNECTION_TOKEN_URL, $credentials);
-		$token = json_decode($token);
+        $token = $this->call($this->getEndpoint().CONNECTION_TOKEN_URL, $credentials);
+        $token = json_decode($token);
 
-		$this->setToken($token);
+        $this->setToken($token);
 
-		return $this->getToken();
+        return $this->getToken();
     }
 
     public function call($endpoint, $payload = false)
     {
-		$ch = curl_init($endpoint);
+        $ch = curl_init($endpoint);
 
-		$headers = false;
-		
-		if ($payload) {
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($ch, CUsRLOPT_POSTFIELDS, json_encode($payload));
+        $headers = false;
 
-			$headers = array("Content-Type: application/json", "Content-Lenght: " . strlen(json_encode($payload)));
+        if ($payload) {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CUsRLOPT_POSTFIELDS, json_encode($payload));
 
-			if ($token = $this->getToken()) {
-				array_merge($headers, array("Authorization: Bearer {$token}"));
-			}
+            $headers = array('Content-Type: application/json', 'Content-Lenght: '.strlen(json_encode($payload)));
 
-		} else {
-			if ($token = $this->getToken()) {
-				$headers = array("Authorization: Bearer {$token}");
-			}
-		}
+            if ($token = $this->getToken()) {
+                array_merge($headers, array("Authorization: Bearer {$token}"));
+            }
+        } else {
+            if ($token = $this->getToken()) {
+                $headers = array("Authorization: Bearer {$token}");
+            }
+        }
 
-		if ($headers) {
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		}
+        if ($headers) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        }
 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
- 
-		return curl_exec($ch);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        return curl_exec($ch);
     }
-
 }

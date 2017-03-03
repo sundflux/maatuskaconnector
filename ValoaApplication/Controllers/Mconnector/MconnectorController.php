@@ -35,15 +35,12 @@ use Mconnector\Version;
 
 class MconnectorController extends \Webvaloa\Application
 {
-
     public function __construct()
     {
-    	$this->view->version = Version::VERSION;
+        $this->view->version = Version::VERSION;
     }
 
     public function index()
     {
-
     }
-
 }

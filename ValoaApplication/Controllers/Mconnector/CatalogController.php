@@ -35,20 +35,17 @@ use Mconnector\Catalog\Catalog as CatalogApiIntegration;
 
 class CatalogController extends \Webvaloa\Application
 {
-	private $catalog;
+    private $catalog;
 
     public function __construct()
     {
-    	try {
-			$this->catalog = new CatalogApiIntegration();
-    	} catch(Exception $e) {
-
-    	}
+        try {
+            $this->catalog = new CatalogApiIntegration();
+        } catch (Exception $e) {
+        }
     }
 
     public function index()
     {
-
     }
-
 }

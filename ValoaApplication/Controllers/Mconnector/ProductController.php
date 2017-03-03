@@ -35,20 +35,17 @@ use Mconnector\Product\Product as ProductApiIntegration;
 
 class ProductController extends \Webvaloa\Application
 {
-	private $product;
+    private $product;
 
     public function __construct()
     {
-    	try {
-			$this->product = new ProductApiIntegration();
-    	} catch(Exception $e) {
-
-    	}
+        try {
+            $this->product = new ProductApiIntegration();
+        } catch (Exception $e) {
+        }
     }
 
     public function index()
     {
-
     }
-
 }
