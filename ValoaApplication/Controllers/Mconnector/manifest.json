@@ -1,0 +1,23 @@
+{
+    "application": "Maatuska Connector for Webvaloa",
+    "version": "1.0.0",
+    "author": "webvaloa.com",
+    "email": "info@webvaloa.com",
+    "www": "http://www.webvaloa.com/",
+    "license": "MIT",
+    "anonymous": "0",
+    "systemcontroller": "0",
+    "files": [
+        { "vendor": "/ValoaApplication/Controllers/MConnector/MConnectorController.php" },
+        { "vendor": "/ValoaApplication/Controllers/MConnector/Views/MConnector.xsl" },
+        { "vendor": "/ValoaApplication/Controllers/MConnector/ProductController.php" },
+        { "vendor": "/ValoaApplication/Controllers/MConnector/Views/Product.xsl" },
+        { "vendor": "/ValoaApplication/Controllers/MConnector/CatalogController.php" },
+        { "vendor": "/ValoaApplication/Controllers/MConnector/Views/Catalog.xsl" }
+    ],
+    "configuration": [
+        { "mconnector_endpoint": "" },
+        { "mconnector_username": "" },
+        { "mconnector_password": "" }
+    ]
+}
