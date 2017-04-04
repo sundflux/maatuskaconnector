@@ -31,6 +31,7 @@
  */
 namespace Mconnector\Connection;
 
+use Libvaloa\Debug;
 use Webvaloa\Configuration;
 
 class Connection
@@ -40,7 +41,7 @@ class Connection
     private $password;
     private $token;
 
-    const CONNECTION_TOKEN_URL = '/index.php/rest/V1/integration/admin/token';
+    const CONNECTION_TOKEN_ENDPOINT = '/index.php/rest/V1/integration/admin/token';
 
     public function __construct()
     {
@@ -89,10 +90,6 @@ class Connection
 
     public function getToken()
     {
-        if (!$this->token) {
-            $this->getAuthenticationToken();
-        }
-
         return $this->token;
     }
 
@@ -108,23 +105,28 @@ class Connection
             'password' => $this->getPassword(),
         );
 
-        $token = $this->call($this->getEndpoint().CONNECTION_TOKEN_URL, $credentials);
+        $token = $this->call(self::CONNECTION_TOKEN_ENDPOINT, $credentials);
         $token = json_decode($token);
 
         $this->setToken($token);
 
-        return $this->getToken();
+        return $token;
     }
 
     public function call($endpoint, $payload = false)
     {
+        $endpoint = $this->getEndpoint() . $endpoint;
+
+        Debug::__print('Calling endpoint:');
+        Debug::__print($endpoint);
+
         $ch = curl_init($endpoint);
 
         $headers = false;
 
         if ($payload) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-            curl_setopt($ch, CUsRLOPT_POSTFIELDS, json_encode($payload));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
 
             $headers = array('Content-Type: application/json', 'Content-Lenght: '.strlen(json_encode($payload)));
 

@@ -31,6 +31,7 @@
  */
 namespace ValoaApplication\Controllers\Mconnector;
 
+use Libvaloa\Debug;
 use Mconnector\Catalog\Catalog as CatalogApiIntegration;
 
 class CatalogController extends \Webvaloa\Application
@@ -42,10 +43,20 @@ class CatalogController extends \Webvaloa\Application
         try {
             $this->catalog = new CatalogApiIntegration();
         } catch (Exception $e) {
+            Debug::__print($e->getMessage());
         }
     }
 
-    public function index()
+    public function index($category = false)
     {
+        if (!$category) {
+            return;
+        }
+
+        try {
+            $this->view->catalog = $this->catalog->getCatalogByCategoryId($category);
+        } catch(\Exception $e) {
+            Debug::__print($e->getMessage());
+        }
     }
 }
